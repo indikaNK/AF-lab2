@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript">
+
+        //declare a global var vehicle
+
+        var vehicleName = 'Toyota';
+
+        console.log(vehicleName +"  from window obj") ;
+
+        function printVehicleNameOuter()
+        {
+            console.log(this.vehicleName);
+        }
+
+        printVehicleNameOuter();
+
+        //declare vehicle object
+
+        // var vehicle = {
+        //
+        //     vehicleName : 'Nisaan',
+        //
+        //     //function to print inner
+        //     printVehicleNameInner : printVehicleNameOuter()
+        //
+        // };
+        //
+        // vehicle.printVehicleNameInner(); //execute
+
+
+
+        //object vehicle
+        var vehicle = {
+
+            vehicleName : 'Nisaan',
+
+            //function to print inner
+            printVehicleNameInner : function(){
+
+                //return a anonymus function
+                return function () {
+                    console.log(this.vehicleName);
+                }
+            }
+
+        };
+
+        // vehicle.printVehicleNameInner(); //execute
+
+
+        var execute =  vehicle.printVehicleNameInner(); //execute
+        execute();
+
+        //try bind & call in java
+
+        //we called a finction inside vehicle obj
+        execute.call(vehicle);
+
+        var execute= vehicle.printVehicleNameInner().bind(vehicle);
+        execute();
+
+
+
+
+
+        //understanding java closure
+
+        function taxCalculator(tax){
+            var taxP = tax;
+            return function (amount){
+                return amount*tax/100;
+                //we return a function that should calculate amount
+
+            }
+        }
+
+
+
+        var calculated = taxCalculator(10);
+        //'calculated 'becomes a function
+        console.log(calculated(90));
+
+
+
+
+
+
+        //=============================================================================================
+        //write a function to call github api
+
+        // function fetchUsers() {
+        //     fetch('https://api.github.com/users').then(function(responce)
+        //     {
+        //         return responce.json();
+        //
+        //
+        //
+        //
+        //     } ).then(function(json) {
+        //         console.log(json);
+        //     });
+        //
+        //
+        //
+        // }
+        //
+        // //execute
+        // fetchUsers();
+        //
+        // function fetchUsers() {
+        //     return fetch('https://api.github.com/users')
+        //         .then(responce => responce.json());
+        //
+        //     fetchUsers().then(function (json) {
+        //         console.log(json)
+        //     })
+        //
+        //
+        //
+        // }
+
+        //04====================================================================================================================
+
+        //create a class using function
+
+        function Vehicle(type) {
+
+            //incrementer inside constructor
+            Vehicle.vehicleCount++;
+
+            //constructor
+            this.type = type;
+        }
+        //add vehicle count as a static variable
+        //to create static :define directly by object
+        Vehicle.vehicleCount = 0;
+
+
+        //add a function to its prototype
+        Vehicle.prototype.drive = function f(){
+
+            console.log("Vehicle is in Drive");
+
+        };
+
+        //create object of vehicle class
+
+        var vehicle = new Vehicle('ToyotA');
+
+        //create car class as child
+        function Car(type){
+
+            Vehicle.call(this.type);
+
+
+        }
+        //extend the class vehicle
+
+        Car.prototype = Object.create(Vehicle.prototype);
+
+        Car.prototype.constructor = Car;
+
+        Car.prototype.balancedWheels = function () {
+            console.log("wheels are balanced");
+
+        };
+
+
+
+
+        var car = new Car('Maclaren');
+        car.drive();
+        car.balancedWheels();
+        console.log(Vehicle.vehicleCount);
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+</head>
+<body>
+
+</body>
+</html>
